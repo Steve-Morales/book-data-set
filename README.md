@@ -1,3 +1,6 @@
+# Important
+- A default date of January 1, 0001 is used when no date was found
+
 # Info
 This dataset was compiled from Google Books (https://books.google.com/). The script uses BeautifulSoup4 in Python to exract the data. 
 

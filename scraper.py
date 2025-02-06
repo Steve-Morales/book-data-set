@@ -2,12 +2,22 @@ from bs4 import BeautifulSoup
 import requests
 import json
 import os
+import re
+
+def isValidDate(date_string):
+    pattern = r"^(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec) \d{2}, \d{4}$"
+    return bool(re.match(pattern, date_string))
 
 def extractBookData(soup):
     jsonData = {}
-    date = soup.find('div', attrs={'class': 'bookinfo_sectionwrap'}).find_all('span', attrs={'dir': 'ltr'})[2].get_text()
-    # print(date)
-    jsonData["published"] = date
+    span_items = soup.find('div', attrs={'class': 'bookinfo_sectionwrap'}).find_all('span', attrs={'dir': 'ltr'})
+    jsonData["published"] = "Jan 1, 0001" # use dfault date 
+    for span in span_items:
+        text = span.get_text()
+        if(isValidDate(text)):
+            jsonData["published"] = text
+            break
+    
 
     labels = soup.find_all('td', attrs={'class': 'metadata_label'})
     values = soup.find_all('td', attrs={'class': 'metadata_value'})
@@ -58,9 +68,9 @@ def getBookLinks(url):
     return links
 
 
-for i in range(1000, 2100, 100):
-    print("Batch", i,"/2100")
-    url = f"https://books.google.com/books?lr=&num=100&uid=117522004192189783614&as_coll=1019&sa=N&start={i}"
+for i in range(0, 3800, 100):
+    print("Batch", i,"/3800")
+    url = f"https://books.google.com/books?lr=&uid=117522004192189783614&as_coll=1001&sa=N&start={i}&num=100"
 
     links = getBookLinks(url)
 
@@ -76,7 +86,7 @@ for i in range(1000, 2100, 100):
         book_data = extractBookData(soup)
 
         # Define the file path
-        file_path = "books_data.json"
+        file_path = "books_data_interesting.json"
 
         # Check if the file exists and has valid JSON
         if os.path.exists(file_path) and os.path.getsize(file_path) > 0:
