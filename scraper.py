@@ -32,7 +32,7 @@ def extractBookData(soup):
             jsonData[label.get_text().lower()] = values[i].get_text()
 
     jsonData["img_url"] = soup.find('img', attrs={'title': 'Front Cover'})['src']
-    
+
     return jsonData
 
 def getBookLinks(url):
@@ -58,7 +58,7 @@ def getBookLinks(url):
     return links
 
 
-for i in range(0, 2100, 100):
+for i in range(1000, 2100, 100):
     print("Batch", i,"/2100")
     url = f"https://books.google.com/books?lr=&num=100&uid=117522004192189783614&as_coll=1019&sa=N&start={i}"
 
