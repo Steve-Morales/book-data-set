@@ -68,7 +68,7 @@ def getBookLinks(url):
     return links
 
 
-for i in range(0, 3800, 100):
+for i in range(2300, 3800, 100):
     print("Batch", i,"/3800")
     url = f"https://books.google.com/books?lr=&uid=117522004192189783614&as_coll=1001&sa=N&start={i}&num=100"
 
